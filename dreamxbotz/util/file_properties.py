@@ -1,4 +1,3 @@
-#Thanks @dreamxBotz for helping in this journey 
 from pyrogram import Client
 from typing import Any, Optional
 from pyrogram.types import Message

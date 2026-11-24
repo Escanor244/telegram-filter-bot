@@ -1,0 +1,21 @@
+# Local working folders / notes (not part of the bot)
+for github/
+dotfiles.md
+for-telegram-links.md
+
+# Python
+__pycache__/
+*.pyc
+
+# Runtime files created by the bot
+*.session
+*.session-journal
+DreamXlogs.txt
+users.txt
+chats.txt
+usersplan.txt
+reason.txt
+junk.txt
+
+# Secrets
+.env

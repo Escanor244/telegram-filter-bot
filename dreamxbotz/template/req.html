@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!-- This document was coded by @bharath_boy || please do not remove this credit -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techno Krrish | {{file_name}}</title>
+    <title>HanakoMovix | {{file_name}}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +15,6 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
-        /* Stylesheet created by @bharath_boy || kindly retain this credit notice */
         :root {
             --primary-cyan: #06b6d4;
             --primary-purple: #8b5cf6;
@@ -46,7 +44,6 @@
             min-height: 100vh;
         }
 
-        /* The following styles were written by @bharath_boy || do not remove credit */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -75,7 +72,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        /* Code credit: @bharath_boy || this line should not be removed */
         .header {
             position: fixed;
             top: 0;
@@ -188,7 +184,6 @@
             display: block;
         }
 
-        /* Authored by @bharath_boy || please leave this credit intact */
         .mobile-nav a {
             display: block;
             padding: 1rem;
@@ -250,7 +245,6 @@
             display: block;
         }
 
-        /* This CSS was crafted by @bharath_boy || credit removal is not permitted */
         .info-panel {
             border-radius: 1.5rem;
             padding: 2rem;
@@ -367,7 +361,6 @@
             background: var(--primary-purple);
         }
 
-        /* Code by @bharath_boy || we request you keep the credit */
         .action-buttons {
             display: flex;
             gap: 1rem;
@@ -473,7 +466,6 @@
             transform: scale(1.05);
         }
 
-        /* @bharath_boy is the author of this style block || please maintain attribution */
         .player-btn img {
             width: 24px;
             height: 24px;
@@ -527,7 +519,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* This section was styled by @bharath_boy || don't erase the credit */
         .info-card:hover::before {
             opacity: 0.6;
         }
@@ -711,24 +702,22 @@
             border-radius: 4px;
         }
 
-        /* Written by @bharath_boy || the credit should not be deleted */
     </style>
 </head>
 
 <body>
-    <!-- The author of this code is @bharath_boy || please keep the credit -->
     <canvas id="particle-canvas"></canvas>
     <div class="gradient-overlay"></div>
     <div class="cursor-dot"></div>
 
     <header class="header">
         <div class="header-content">
-            <a href="https://t.me/technokrrishofficial" class="logo">Techno Krrish</a>
+            <a href="https://t.me/+tMAyQb3wxmsyMjg1" class="logo">HanakoMovix</a>
 
             <nav class="nav">
                 <a href="#video-section">Stream</a>
                 <a href="#explore-section">Explore</a>
-                <a href="https://t.me/technokrrishofficial">Contact</a>
+                <a href="https://t.me/Escanor_24">Contact</a>
             </nav>
 
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
@@ -739,16 +728,15 @@
         <nav class="mobile-nav" id="mobile-nav">
             <a href="#video-section" onclick="closeMobileMenu()">Stream</a>
             <a href="#explore-section" onclick="closeMobileMenu()">Explore</a>
-            <a href="https://t.me/technokrrishofficial" onclick="closeMobileMenu()">Contact</a>
+            <a href="https://t.me/Escanor_24" onclick="closeMobileMenu()">Contact</a>
         </nav>
     </header>
 
     <div class="main-container">
         <main>
-            <!-- Coded by @bharath_boy || it's requested not to remove the credit -->
             <section id="video-section" class="video-section">
                 <div class="video-container glass">
-                    <video id="player" playsinline controls data-poster="https://envs.sh/34_.jpg?x=bcb2b992">
+                    <video id="player" playsinline controls data-poster="{{ img_base }}/background.jpg">
                         <source src="{{file_url}}" type="video/mp4" />
                     </video>
                 </div>
@@ -770,11 +758,11 @@
                                 <span>Download</span>
                             </button>
                             <button class="action-btn secondary" onclick="vlc_player()">
-                                <img src="https://i.postimg.cc/15TQ4y7B/vlc.png" alt="VLC">
+                                <img src="https://escanor244.github.io/telegram-bot-resources/icons/vlc.png" alt="VLC">
                                 <span>VLC Player</span>
                             </button>
                             <button class="action-btn tertiary" onclick="mx_player()">
-                                <img src="https://i.postimg.cc/sx4Msv4T/mx.png" alt="MX Player">
+                                <img src="https://escanor244.github.io/telegram-bot-resources/icons/mx.png" alt="MX Player">
                                 <span>MX Player</span>
                             </button>
                             <button class="action-btn quaternary" id="more-players-btn" onclick="toggleMorePlayers()">
@@ -784,23 +772,23 @@
                             <div class="more-players-dropdown glass" id="more-players-dropdown">
                                 <div class="dropdown-grid">
                                     <a href="#" class="player-btn" onclick="playit_player()">
-                                        <img src="https://i.postimg.cc/RVGWYJFF/playit.png" alt="PLAYit">
+                                        <img src="https://escanor244.github.io/telegram-bot-resources/icons/playit.png" alt="PLAYit">
                                         <span>PLAYit</span>
                                     </a>
                                     <a href="#" class="player-btn" onclick="km_player()">
-                                        <img src="https://i.postimg.cc/wT9tFQ9Z/km.png" alt="KMPlayer">
+                                        <img src="https://escanor244.github.io/telegram-bot-resources/icons/km.png" alt="KMPlayer">
                                         <span>KMPlayer</span>
                                     </a>
                                     <a href="#" class="player-btn" onclick="s_player()">
-                                        <img src="https://i.postimg.cc/XYJr6NGg/s.png" alt="S Player">
+                                        <img src="https://escanor244.github.io/telegram-bot-resources/icons/s.png" alt="S Player">
                                         <span>S Player</span>
                                     </a>
                                     <a href="#" class="player-btn" onclick="hd_player()">
-                                        <img src="https://i.postimg.cc/rFT43LNh/hd.png" alt="HD Player">
+                                        <img src="https://escanor244.github.io/telegram-bot-resources/icons/hd.png" alt="HD Player">
                                         <span>HD Player</span>
                                     </a>
                                     <a href="#" class="player-btn" onclick="mx_playerpro()">
-                                        <img src="https://i.postimg.cc/sx4Msv4T/mx.png" alt="MX Player pro">
+                                        <img src="https://escanor244.github.io/telegram-bot-resources/icons/mx.png" alt="MX Player pro">
                                         <span>MX Player Pro</span>
                                     </a>
                                 </div>
@@ -816,14 +804,15 @@
                 <div class="cards-container">
                     <div class="info-card glass fade-in">
                         <div class="card-icon">
-                            <img src="https://i.postimg.cc/L546cM3F/erasebg-transformed.png" alt="Channel Logo">
+                            <i class="fas fa-film"></i>
                         </div>
                         <h3>Our Channels</h3>
                         <p>Get the latest updates from our main channel for exclusive content and real-time
                             notifications.</p>
                         <div class="card-links">
-                            <a href="https://t.me/technokrrishofficial" class="card-btn">Join Blaze Updates</a>
-                            <a href="https://t.me/technokrrishofficial" class="card-btn">Anime Stickers</a>
+                            <a href="https://t.me/+tMAyQb3wxmsyMjg1" class="card-btn">Updates Channel</a>
+                            <a href="https://t.me/+ryDE7AwX-Jg3MTA1" class="card-btn">Movie Request Group</a>
+                            <a href="https://www.youtube.com/@KnowFluke" class="card-btn">YouTube Channel</a>
                         </div>
                     </div>
 
@@ -835,9 +824,7 @@
                         <p>Interact with our intelligent bots for an enhanced streaming experience and automated
                             assistance.</p>
                         <div class="card-links">
-                            <a href="https://t.me/technokrrishofficial" class="card-btn">PosterFlix Bot</a>
-                            <a href="https://t.me/technokrrishofficial" class="card-btn">Thumb Changer</a>
-                            <a href="https://t.me/technokrrishofficial" class="card-btn">Forward Bot Pro</a>
+                            <a href="https://t.me/DoNexusBot" class="card-btn">DoNexus Bot</a>
                             <!-- <a href="#" class="card-btn">Dummy Bot Button</a> -->
                         </div>
                     </div>
@@ -845,16 +832,14 @@
             </section>
         </main>
     </div>
-    <!-- Credit @bharath_boy for this markup || do not delete this comment -->
     <footer class="footer">
-        <p>&copy; 2025 <a href="https://t.me/technokrrishofficial">Techno Krrish</a>. All Rights Reserved.</p>
+        <p>&copy; 2026 <a href="https://t.me/+tMAyQb3wxmsyMjg1">HanakoMovix</a>. All Rights Reserved.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
     <script>
-        // Script authored by @bharath_boy || please do not remove credit.
         // Global variables
         let particles = [];
         let mouse = { x: 0, y: 0 };
@@ -876,7 +861,6 @@
             });
         }
 
-        // The following script is by @bharath_boy || kindly keep this credit.
         // Advanced particle system
         function initializeParticles() {
             const canvas = document.getElementById('particle-canvas');
@@ -956,7 +940,6 @@
             animateParticles();
         }
 
-        // Author: @bharath_boy || credit removal is not allowed.
         function initializeAnimations() {
             document.querySelectorAll('.info-card').forEach(card => {
                 card.addEventListener('mousemove', (e) => {
@@ -1024,7 +1007,6 @@
                 observer.observe(el);
             });
         }
-        // This function was coded by @bharath_boy || don't remove the credit line.
         function initializeCursor() {
             const cursor = document.querySelector('.cursor-dot');
 
@@ -1085,7 +1067,6 @@
                 menuBtn.className = 'fas fa-bars';
             }
         }
-        // @bharath_boy wrote this script || please maintain the credit.
         function closeMobileMenu() {
             document.getElementById('mobile-nav').classList.remove('active');
             document.querySelector('.mobile-menu-btn i').className = 'fas fa-bars';
@@ -1247,7 +1228,6 @@
         };
         const videoUrl = getCurrentUrl();
         const e = videoUrl;
-        // Credit for this JavaScript goes to @bharath_boy || please do not remove.
         function vlc_player() { const x = e.replace(/^https?:\/\//, ""); window.location.href = `vlc://${x}`; event.preventDefault(); }
         function mx_player() { window.location.href = `intent:${e}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.ad;end`; event.preventDefault(); }
         function mx_playerpro() { window.location.href = `intent:${e}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.pro;end`; event.preventDefault(); }
@@ -1255,7 +1235,6 @@
         function km_player() { window.location.href = `intent:${e}#Intent;package=com.kmplayer;end`; event.preventDefault(); }
         function s_player() { window.location.href = `intent:${e}#Intent;action=com.young.simple.player.playback_online;package=com.young.simple.player;end`; event.preventDefault(); }
         function hd_player() { window.location.href = `intent:${e}#Intent;package=uplayer.video.player;end`; event.preventDefault(); }
-        // Coded by @bharath_boy || the credit must be kept.
     </script>
 </body>
 

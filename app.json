@@ -1,5 +1,5 @@
 {
-    "name": "𝓓𝓻𝓮𝓪𝓶𝔁𝓑𝓸𝓽𝔃",
+    "name": "HanakoMovix",
     "description": "When you going to send file on telegram channel this bot will save that in database, So you can search that easily in inline mode",
     "stack": "container",
     "keywords": [
@@ -15,8 +15,8 @@
       "index",
       "inline"
     ],
-    "website": "https://github.com/DreamXBotz/Auto_Filter_Bot.git",
-    "repository": "https://github.com/DreamXBotz/Auto_Filter_Bot.git",
+    "website": "https://github.com/Escanor244/telegram-filter-bot",
+    "repository": "https://github.com/Escanor244/telegram-filter-bot",
     "env": {
         "BOT_TOKEN": {
             "description": "Your bot token.",
@@ -50,8 +50,12 @@
             "description": "Username or ID of users to give access of inline search. Separate multiple users by space.\nLeave it empty if you don't want to restrict bot usage.",
             "required": false
         },
-        "AUTH_CHANNEL": {
-            "description": "ID of channel.Make sure bot is admin in this channel. Without subscribing this channel users cannot use bot.",
+        "AUTH_CHANNELS": {
+            "description": "Force-subscribe channel IDs (-100xxxxxxxxxx), separated by SPACES not commas. Bot must be admin with 'Invite users' permission in each. Recommended max 4.",
+            "required": false
+        },
+        "AUTH_REQ_CHANNELS": {
+            "description": "Join-request force-subscribe channel IDs, separated by SPACES not commas. User only needs to send a join request. Bot must be admin. Recommended max 2.",
             "required": false
         },
         "DATABASE_URI": {

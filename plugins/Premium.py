@@ -64,7 +64,7 @@ async def myplan(client, message):
             )
         else:
             await message.reply_photo(
-                photo="https://i.ibb.co/gMrpRQWP/photo-2025-07-09-05-21-32-7524948058832896004.jpg", 
+                photo=f"{IMG_BASE_URL}/prestream.jpg", 
                 caption=(
                     f"<b>ʜᴇʏ {user},\n\n"
                     f"ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀɴ ᴀᴄᴛɪᴠᴇ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴ.\n"
@@ -180,7 +180,7 @@ async def plan(client, message):
             InlineKeyboardButton('🚫 ᴄʟᴏꜱᴇ 🚫', callback_data='close_data')
         ]]
     msg = await message.reply_photo(
-        photo="https://graph.org/file/86da2027469565b5873d6.jpg",
+        photo=f"{IMG_BASE_URL}/plan.jpg",
         caption=script.BPREMIUM_TXT,
         reply_markup=InlineKeyboardMarkup(btn)
     )
@@ -191,7 +191,6 @@ async def plan(client, message):
 
 
 # Telegram Star Payment Method 👇
-# Credit - @BeingXAnonymous
 
 @Client.on_callback_query(filters.regex(r"buy_\d+"))
 async def premium_button(client, callback_query: CallbackQuery):

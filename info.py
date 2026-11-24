@@ -31,12 +31,13 @@ INDEX_CAPTION = bool(environ.get('SAVE_CAPTION', True)) # Save caption db when i
 #Making it false will not save caption in db SO you can save some storage space
 
 
-PICS = (environ.get('PICS', 'https://graph.org/file/56b5deb73f3b132e2bb73.jpg https://graph.org/file/5303692652d91d52180c2.jpg https://graph.org/file/425b6f46efc7c6d64105f.jpg https://graph.org/file/876867e761c6c7a29855b.jpg')).split()  # Sample pic
-NOR_IMG = environ.get("NOR_IMG", "https://graph.org/file/e20b5fdaf217252964202.jpg")
-MELCOW_PHOTO = environ.get("MELCOW_PHOTO", "https://graph.org/file/56b5deb73f3b132e2bb73.jpg")
-SPELL_IMG = environ.get("SPELL_IMG", "https://graph.org/file/13702ae26fb05df52667c.jpg")
-SUBSCRIPTION = (environ.get('SUBSCRIPTION', 'https://graph.org/file/242b7f1b52743938d81f1.jpg'))
-FSUB_PICS = (environ.get('FSUB_PICS', 'https://graph.org/file/7478ff3eac37f4329c3d8.jpg https://graph.org/file/56b5deb73f3b132e2bb73.jpg')).split()  # Fsub pic
+IMG_BASE_URL = environ.get('IMG_BASE_URL', 'https://escanor244.github.io/telegram-bot-resources/hanako-movix-images').rstrip('/')  # Folder with this bot's images (see IMAGES.md in the resources repo)
+PICS = (environ.get('PICS', f'{IMG_BASE_URL}/start1.jpg {IMG_BASE_URL}/start2.jpg {IMG_BASE_URL}/start3.jpg {IMG_BASE_URL}/start4.jpg')).split()  # Start pics
+NOR_IMG = environ.get("NOR_IMG", f"{IMG_BASE_URL}/start1.jpg")
+MELCOW_PHOTO = environ.get("MELCOW_PHOTO", f"{IMG_BASE_URL}/welcome.jpg")
+SPELL_IMG = environ.get("SPELL_IMG", f"{IMG_BASE_URL}/start1.jpg")
+SUBSCRIPTION = (environ.get('SUBSCRIPTION', f'{IMG_BASE_URL}/premium.jpg'))
+FSUB_PICS = (environ.get('FSUB_PICS', f'{IMG_BASE_URL}/fsub1.jpg {IMG_BASE_URL}/fsub2.jpg')).split()  # Fsub pic
 
 # ============================
 # Admin, Channels & Users Configuration
@@ -98,14 +99,14 @@ LANDSCAPE_POSTER = bool(environ.get('LANDSCAPE_POSTER', True)) # Shows landscape
 IS_VERIFY = is_enabled(environ.get('IS_VERIFY', 'False'), False)  # Verification On (True) / Off (False)
 LOG_VR_CHANNEL = int(environ.get('LOG_VR_CHANNEL', '-100')) #Verification Channel Id 
 LOG_API_CHANNEL = int(environ.get('LOG_API_CHANNEL', '-100')) #If Anyone Set Your Bot In Any Group And Set Shortner In That Group Then In This Channel The All Details Come
-VERIFY_IMG = environ.get("VERIFY_IMG", "https://telegra.ph/file/9ecc5d6e4df5b83424896.jpg")
+VERIFY_IMG = environ.get("VERIFY_IMG", f"{IMG_BASE_URL}/verify.jpg")
 
-TUTORIAL = environ.get("TUTORIAL", "https://t.me/+GeFoPGMglA1kNTZl")   # Tutorial link for verification
-TUTORIAL_2 = environ.get("TUTORIAL_2", "https://t.me/+GeFoPGMglA1kNTZl")   # Second tutorial link for verification
-TUTORIAL_3 = environ.get("TUTORIAL_3", "https://t.me/+GeFoPGMglA1kNTZl")   # Third tutorial link for verification
+TUTORIAL = environ.get("TUTORIAL", "https://t.me/+tMAyQb3wxmsyMjg1")   # Tutorial link for verification
+TUTORIAL_2 = environ.get("TUTORIAL_2", "https://t.me/+tMAyQb3wxmsyMjg1")   # Second tutorial link for verification
+TUTORIAL_3 = environ.get("TUTORIAL_3", "https://t.me/+tMAyQb3wxmsyMjg1")   # Third tutorial link for verification
 
 # Verification (Must Fill All Veriables. Else You Got Error
-SHORTENER_API = environ.get("SHORTENER_API", "2469484d258897da1dc9edaf4face6f466301f39") # Shortener API key
+SHORTENER_API = environ.get("SHORTENER_API", "Your_Shortener_API") # Shortener API key - set your own in env
 SHORTENER_WEBSITE = environ.get("SHORTENER_WEBSITE", "https://api.gplinks.com") # Shortener website
 
 SHORTENER_API2 = environ.get("SHORTENER_API2", "yei5ei5eie6id6d")  # Shortener API key for second website
@@ -215,9 +216,9 @@ FQDN = str(getenv('FQDN', BIND_ADRESS)) if not ON_HEROKU or getenv('FQDN') else 
 URL = "https://{}/".format(FQDN) if ON_HEROKU or NO_PORT else "https://{}/".format(FQDN, PORT)
 SLEEP_THRESHOLD = int(environ.get('SLEEP_THRESHOLD', '60'))
 WORKERS = int(environ.get('WORKERS', '4'))
-SESSION_NAME = str(environ.get('SESSION_NAME', 'dreamXBotz'))
+SESSION_NAME = str(environ.get('SESSION_NAME', 'HanakoMovix'))
 MULTI_CLIENT = False
-name = str(environ.get('name', 'DREAMXBOTZ'))
+name = str(environ.get('name', 'HANAKOMOVIX'))
 PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
 if 'DYNO' in environ:
     ON_HEROKU = True

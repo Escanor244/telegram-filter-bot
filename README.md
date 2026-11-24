@@ -1,3 +1,7 @@
+# 🎬 HanakoMovix
+
+A Telegram movie search bot: search any movie in the group or in the bot, and get the file instantly.
+
 ## 🔔 New Version Released – V1.4
 
 - ✅ Spell Check Toggle (Group Only)
@@ -82,4 +86,4 @@ restart             – Restart the bot
 
 ---
 
-<p align="center"><b>Jai Shree Krishna 🙏😉</b></p>
+<p align="center"><b>🎬 HanakoMovix</b> · <a href="https://t.me/+tMAyQb3wxmsyMjg1">Updates</a> · <a href="https://t.me/Escanor_24">Contact</a></p>

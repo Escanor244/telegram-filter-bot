@@ -135,8 +135,13 @@ async def get_movie_details(query, id=False, file=None):
         return None
 
 async def get_movie_detailsx(query, id=False, file=None):
-    base_url = "https://bharath-boy-api.vercel.app/api/movie-posters"
+    # PLACEHOLDER: the old third-party poster server was removed.
+    # Leave empty until our own TMDB lookup is added; callers then fall back to IMDb.
+    base_url = ""
     q = str(query).strip()
+    if not base_url:
+        logger.info("Poster API not configured - using IMDb instead")
+        return {"error": "poster api not configured"}
     try:
         async with aiohttp.ClientSession() as session:
             params = {"query": q, "api_key": TMDB_API_KEY}

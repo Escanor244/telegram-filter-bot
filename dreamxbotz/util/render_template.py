@@ -1,4 +1,3 @@
-#Thanks @dreamxbotz for helping in this journey 
 
 import jinja2
 from info import *
@@ -44,4 +43,5 @@ async def render_page(id, secure_hash, src=None):
         file_url=src,
         file_size=file_size,
         file_unique_id=file_data.unique_id,
+        img_base=IMG_BASE_URL,
     )

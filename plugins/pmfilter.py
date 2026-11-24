@@ -128,7 +128,7 @@ async def refercall(bot, query):
         await bot.edit_message_media(
             query.message.chat.id,
             query.message.id,
-            InputMediaPhoto("https://graph.org/file/1a2e64aee3d4d10edd930.jpg")
+            InputMediaPhoto(f"{IMG_BASE_URL}/refer.jpg")
         )
     except Exception as e:    
         pass
@@ -1430,7 +1430,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer(text=script.PRE_STREAM_ALERT, show_alert=True)
         dreamcinezone = await client.send_photo(
             chat_id=query.message.chat.id,
-            photo="https://i.ibb.co/whf8xF7j/photo-2025-07-26-10-42-46-7531339305176793100.jpg",
+            photo=f"{IMG_BASE_URL}/prestream.jpg",
             caption=script.PRE_STREAM,
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("🚀 Buy Premium 🚀", callback_data="premium_info")]
@@ -1496,7 +1496,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await client.edit_message_media(
             query.message.chat.id,
             query.message.id,
-            InputMediaPhoto('https://graph.org/file/99eebf5dbe8a134f548e0.jpg')
+            InputMediaPhoto(f'{IMG_BASE_URL}/donate.jpg')
         )
         await query.message.edit_text(
             text=script.DREAMXBOTZ_DONATION.format(query.from_user.mention, QR_CODE, OWNER_UPI_ID),
@@ -1548,7 +1548,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
                 msg = await client.send_photo(
                     chat_id=query.message.chat.id,
-                    photo="https://i.ibb.co/0jC8MSDZ/photo-2025-07-26-10-42-36-7531339283701956616.jpg",
+                    photo=f"{IMG_BASE_URL}/trial.jpg",
                     caption=(
                         "<b>🥳 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴꜱ\n\n"
                         "🎉 ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ꜰʀᴇᴇ ᴛʀᴀɪʟ ꜰᴏʀ <u>5 ᴍɪɴᴜᴛᴇs</u> ꜰʀᴏᴍ ɴᴏᴡ !\n\n"
@@ -1568,7 +1568,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
     elif query.data == "source":
         buttons = [[
-            InlineKeyboardButton('Source Code 📜', url='https://t.me/royalkrrishna'),
+            InlineKeyboardButton('Source Code 📜', url='https://t.me/Escanor_24'),
             InlineKeyboardButton('⇋ ʙᴀᴄᴋ ⇋', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)

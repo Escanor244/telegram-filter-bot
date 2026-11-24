@@ -1,4 +1,3 @@
-#Thanks @dreamxbotz for helping in this journey 
 import asyncio
 import logging
 import aiohttp
