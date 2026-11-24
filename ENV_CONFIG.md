@@ -54,7 +54,7 @@ Channel/group IDs are negative and start with `-100` (e.g. `-1001234567890`).
 | Variable | Default | Description |
 |---|---|---|
 | `CHANNELS` | `-100` | Space-separated channels to **auto-index**: every document/video/audio posted there is saved to the DB. |
-| `BIN_CHANNEL` | `-100` | Where files are copied to create stream/download links; also receives "#NoResults" logs. ⚠️ The streamer reads from `LOG_CHANNEL`, so set **both to the same channel** or streaming fails (bug B3). |
+| `BIN_CHANNEL` | `-100` | Where files are copied to create stream/download links; also receives "#NoResults" logs. ⚠️ The stream page reads `BIN_CHANNEL` but the video data is read from `LOG_CHANNEL` (`custom_dl.py:52`), so set **both to the same channel** or streaming fails (bug B3). |
 | `PREMIUM_LOGS` | `-100` | Logs for premium added, expired, `/plan` views, Stars purchases, redeems. |
 | `DELETE_CHANNELS` | `-100` | Space-separated channels: any file posted there is **deleted** from the DB. |
 | `SUPPORT_CHAT_ID` | `-100` (becomes "not set") | Group ID treated as support group: searches there show a count only, and `/request` works only there. |
@@ -64,23 +64,23 @@ Channel/group IDs are negative and start with `-100` (e.g. `-1001234567890`).
 | `AUTH_REQ_CHANNELS` | `-100` (ignored) | Space-separated **request-to-join** force-sub channels (a join request counts as subscribed). |
 | `INDEX_REQ_CHANNEL` | same as `LOG_CHANNEL` | Where index requests from non-admins are sent for approval. |
 | `LOG_VR_CHANNEL` | `-100` | Default verification log channel for groups (groups can override with `/set_log_channel`). |
-| `LOG_API_CHANNEL` | `-100` | Receives logs whenever a group admin changes caption, tutorial, shortener (**including their API key**), log channel, verify times or fsub. |
+| `LOG_API_CHANNEL` | `-100` | Receives a log whenever caption, tutorial, shortener (**including the API key**), log channel, verify times or fsub are changed for a group. Since the owner lock only `ADMINS` can make these changes. |
 | `MOVIE_UPDATE_CHANNEL` | `-100` | Channel that receives "New Movie/Series Added" posts. |
 
 ---
 
 ## 4. Links & branding
 
-| Variable | Default (third-party, change these) | Used in |
+| Variable | Default | Used in |
 |---|---|---|
 | `GRP_LNK` | `https://t.me/+tMAyQb3wxmsyMjg1` | "Request here" / "Search here" buttons. |
 | `OWNER_LNK` | `https://t.me/Escanor_24` | "Send payment screenshot", "Bot Owner", "Contact support", "Request to admin" buttons; Developer link in About. |
 | `UPDATE_CHNL_LNK` | `https://t.me/+tMAyQb3wxmsyMjg1` | "Join Updates Channel" button under every file. |
-| `TUTORIAL` | `https://t.me/+GeFoPGMglA1kNTZl` | Default "How to verify" link (verification 1). |
+| `TUTORIAL` | `https://t.me/+tMAyQb3wxmsyMjg1` | Default "How to verify" link (verification 1). |
 | `TUTORIAL_2` | same as above | Default tutorial link for verification 2. |
 | `TUTORIAL_3` | same as above | Default tutorial link for verification 3. |
 | `MSG_ALRT` | `Share & Support Us ♥️` | Toast text shown on many button presses. |
-| `CUSTOM_FILE_CAPTION` | `Script.CAPTION` (contains `t.me/+ryDE7AwX-Jg3MTA1`) | Caption on every sent file. Placeholders: `{file_name}`, `{file_size}`, `{file_caption}`. Groups can override with `/set_caption`. |
+| `CUSTOM_FILE_CAPTION` | `Script.CAPTION` (HanakoMovix caption, links to your updates channel) | Caption on every sent file. Placeholders: `{file_name}`, `{file_size}`, `{file_caption}`. Groups can override with `/set_caption`. |
 | `IMDB_TEMPLATE` | `Script.IMDB_TEMPLATE_TXT` | Default IMDb result template (groups can override with `/set_template`). |
 
 > Many other names and links are **hardcoded** (not env variables): see section 6 of `SECURITY_AUDIT.md`.
@@ -91,14 +91,15 @@ Channel/group IDs are negative and start with `-100` (e.g. `-1001234567890`).
 
 | Variable | Default | Used for |
 |---|---|---|
-| `PICS` | 4 graph.org images (space-separated) | Random photo on `/start`. |
-| `SUBSCRIPTION` | graph.org image | Premium menus, `/myplan`, `/start premium`. |
-| `FSUB_PICS` | 2 graph.org images (space-separated) | Force-subscribe prompt. |
-| `MELCOW_PHOTO` | graph.org image | Group welcome message. |
-| `VERIFY_IMG` | telegra.ph image | "Verification complete" message. |
+| `IMG_BASE_URL` | `https://escanor244.github.io/telegram-bot-resources/hanako-movix-images` | Folder every image link below is built from. Change it per bot. |
+| `PICS` | `IMG_BASE_URL/start1-4.jpg` (space-separated) | Random photo on `/start`. |
+| `SUBSCRIPTION` | `IMG_BASE_URL/premium.jpg` | Premium menus, `/myplan`, `/start premium`. |
+| `FSUB_PICS` | `IMG_BASE_URL/fsub1.jpg fsub2.jpg` | Force-subscribe prompt. |
+| `MELCOW_PHOTO` | `IMG_BASE_URL/welcome.jpg` | Group welcome message. |
+| `VERIFY_IMG` | `IMG_BASE_URL/verify.jpg` | "Verification complete" message. |
 | `QR_CODE` | `Your_Qr_Code` | Link to your payment QR image (premium text and Donation page). |
-| `NOR_IMG` | graph.org image | ❌ Not used anywhere. |
-| `SPELL_IMG` | graph.org image | ❌ Not used anywhere. |
+| `NOR_IMG` | `IMG_BASE_URL/start1.jpg` | ❌ Not used anywhere. |
+| `SPELL_IMG` | `IMG_BASE_URL/start1.jpg` | ❌ Not used anywhere. |
 
 ---
 
@@ -119,7 +120,7 @@ Channel/group IDs are negative and start with `-100` (e.g. `-1001234567890`).
 |---|---|---|---|
 | `IS_VERIFY` | `False` | flag | Default verification ON/OFF for groups (`/verify on\|off` overrides per group). Premium users skip verification. |
 | `SHORTENER_WEBSITE` | `https://api.gplinks.com` | text | 1st shortener domain. |
-| `SHORTENER_API` | ⚠️ `2469484d258897da1dc9edaf4face6f466301f39` | text | 1st shortener API key. **The default is someone else's key, so always set your own.** |
+| `SHORTENER_API` | `Your_Shortener_API` (placeholder) | text | 1st shortener API key. Set your own in env. |
 | `SHORTENER_WEBSITE2` | `Shortner_Website_Url` | text | 2nd shortener domain. |
 | `SHORTENER_API2` | `yei5ei5eie6id6d` (placeholder) | text | 2nd shortener API key. |
 | `SHORTENER_WEBSITE3` | `Shortner_Website_Url` | text | 3rd shortener domain. |
@@ -194,8 +195,8 @@ Posts "New Movie/Series Added" to `MOVIE_UPDATE_CHANNEL` when files arrive in `C
 | `PING_INTERVAL` | `1200` | seconds | Self-ping interval on Heroku. (A separate keep-alive ping to `URL` also runs every 298 s on all hosts.) |
 | `SLEEP_THRESHOLD` | `60` | seconds | FloodWait auto-sleep limit for the extra `MULTI_TOKEN` clients only. |
 | `WORKERS` | `4` | number | ❌ Not used (the main client is hardcoded to 60 workers). |
-| `SESSION_NAME` | `dreamXBotz` | text | ❌ Not used. |
-| `name` | `DREAMXBOTZ` | text | ❌ Not used. |
+| `SESSION_NAME` | `HanakoMovix` | text | ❌ Not used. |
+| `name` | `HANAKOMOVIX` | text | ❌ Not used. |
 
 ---
 
@@ -203,11 +204,13 @@ Posts "New Movie/Series Added" to `MOVIE_UPDATE_CHANNEL` when files arrive in `C
 | Where | Variable | Note |
 |---|---|---|
 | `docker-compose.yml` | `HEROKU_API_KEY` | Never read. |
-| `app.json` | `AUTH_CHANNEL` | Wrong name: the code reads `AUTH_CHANNELS`. |
+| `app.json` | `AUTH_CHANNEL` | Fixed: now `AUTH_CHANNELS` and `AUTH_REQ_CHANNELS` (Heroku only). |
 
 ---
 
 ## 12. Minimal working example
+
+The full commented template for Render is `env.example`.
 
 ```env
 API_ID=1234567
