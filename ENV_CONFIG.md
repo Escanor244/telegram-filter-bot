@@ -9,13 +9,14 @@ Every environment variable the code reads, with its real default (from `info.py`
 ### 1. A `.env` file is NOT loaded automatically
 No code calls `load_dotenv()`. Set these as **real environment variables**: in your hosting panel (Heroku/Koyeb/Render config vars), in `docker-compose.yml` under `environment:`, or exported in the shell before `python bot.py`. `env.example` is only a template.
 
-### 2. Two kinds of on/off values: they behave differently
-| Type in tables below | How it is parsed | To turn ON | To turn OFF |
-|---|---|---|---|
-| **flag** | `is_enabled()` | `True`, `yes`, `1`, `enable`, `y` | `False`, `no`, `0`, `disable`, `n` |
-| **bool ⚠️** | `bool(environ.get(...))` | any non-empty text | **leave it empty/unset**. Writing `False` turns it **ON**. Remove the variable to use the default. |
+### 2. On/off values
+Every on/off switch is read with `is_enabled()`:
 
-Variables marked **bool ⚠️** with a default of `True` **cannot be turned off** except by setting them to an empty string.
+| To turn ON | To turn OFF | Not set, empty or a typo |
+|---|---|---|
+| `True`, `yes`, `1`, `enable`, `y` | `False`, `no`, `0`, `disable`, `n` | the default shown below |
+
+(Fixed 24 Nov 2026: 15 switches used to be read with `bool()`, where even `False` meant ON.)
 
 ### 3. List values
 Values marked "space-separated" take several items separated by spaces, e.g. `ADMINS=111111 222222`.
@@ -137,15 +138,15 @@ Verification resets daily at midnight (Asia/Kolkata).
 | Variable | Default | Type | Description |
 |---|---|---|---|
 | `AUTO_FFILTER` | `True` | flag | Answer search text in groups. |
-| `PM_SEARCH` | `True` | **bool ⚠️** | Default for searching in bot PM (overridden by `/pm_search`). |
-| `USE_CAPTION_FILTER` | `True` | **bool ⚠️** | Also match the search against file captions (not only file names). |
-| `SAVE_CAPTION` | `True` | **bool ⚠️** | Store captions when indexing (stored as `INDEX_CAPTION`). Saves DB space when off. |
+| `PM_SEARCH` | `True` | flag | Default for searching in bot PM (overridden by `/pm_search`). |
+| `USE_CAPTION_FILTER` | `True` | flag | Also match the search against file captions (not only file names). |
+| `SAVE_CAPTION` | `True` | flag | Store captions when indexing (stored as `INDEX_CAPTION`). Saves DB space when off. |
 | `ULTRA_FAST_MODE` | `False` when unset | flag | Faster search that skips counting total results (pages show "1, 2…" instead of "1/10"). |
 | `MAX_BTN` | `True` | flag | Default "Max buttons": 10 results per page when on, `MAX_B_TN` when off. |
 | `MAX_B_TN` | `5` | number | Results per page when Max buttons is off. |
 | `BUTTON_MODE` | `False` | flag | Default result style: buttons (True) or text links in the message (False). |
 | `SPELL_CHECK_REPLY` | `True` | flag | Default spell-check / "did you mean" for groups. |
-| `NO_RESULTS_MSG` | `True` | **bool ⚠️** | Log failed searches to `BIN_CHANNEL`. |
+| `NO_RESULTS_MSG` | `True` | flag | Log failed searches to `BIN_CHANNEL`. |
 | `IMDB` | `False` | flag | Default "IMDB poster" setting for groups. ⚠️ Enabling it currently crashes searches (bug B1). |
 | `TMDB_ON_SEARCH` | `False` | flag | Use the TMDB-based lookup for search results / spell-check. ⚠️ Sends your key to a third-party API (R2). |
 | `LONG_IMDB_DESCRIPTION` | `False` | flag | Use the long plot outline instead of the short plot. |
@@ -154,7 +155,7 @@ Verification resets daily at midnight (Asia/Kolkata).
 | `DELETE_TIME` | `300` (5 min) | seconds | How long sent files, results and some prompts stay before being deleted. e.g. `7200` = 2 hours. |
 | `PROTECT_CONTENT` | `False` | flag | Default "File secure": stops users forwarding/saving sent files. |
 | `MELCOW_NEW_USERS` | `False` | flag | Default "Welcome message" for groups. |
-| `EMOJI_MODE` | `False` | **bool ⚠️** | React with a random emoji to every message. |
+| `EMOJI_MODE` | `False` | flag | React with a random emoji to every message. |
 | `P_TTI_SHOW_OFF` | `False` | flag | Stored as the group's `botpm` setting and printed at start-up, but no code acts on it. |
 | `SKIP` | `2` | number | Default first message ID when indexing a channel (also `/setskip`). |
 | `CACHE_TIME` | `300` | number | ❌ Not used anywhere. |
@@ -169,12 +170,12 @@ Posts "New Movie/Series Added" to `MOVIE_UPDATE_CHANNEL` when files arrive in `C
 
 | Variable | Default | Type | Description |
 |---|---|---|---|
-| `MOVIE_UPDATE_NOTIFICATION` | `False` | **bool ⚠️** | Default ON/OFF (overridden by `/movie_update on\|off`, which is saved in DB). |
-| `DREAMXBOTZ_IMAGE_FETCH` | `True` | **bool ⚠️** | Download and resize the poster before posting. |
-| `LINK_PREVIEW` | `False` | **bool ⚠️** | Post as text with a link preview instead of a photo. |
-| `ABOVE_PREVIEW` | `True` | **bool ⚠️** | Show the link preview above the text. |
-| `TMDB_POSTER` | `False` | **bool ⚠️** | Use TMDB data/posters (falls back to IMDb on error). ⚠️ Third-party API (R2). |
-| `LANDSCAPE_POSTER` | `True` | **bool ⚠️** | Use the wide backdrop image instead of the tall poster (with TMDB). |
+| `MOVIE_UPDATE_NOTIFICATION` | `False` | flag | Default ON/OFF (overridden by `/movie_update on\|off`, which is saved in DB). |
+| `DREAMXBOTZ_IMAGE_FETCH` | `True` | flag | Download and resize the poster before posting. |
+| `LINK_PREVIEW` | `False` | flag | Post as text with a link preview instead of a photo. |
+| `ABOVE_PREVIEW` | `True` | flag | Show the link preview above the text. |
+| `TMDB_POSTER` | `False` | flag | Use TMDB data/posters (falls back to IMDb on error). ⚠️ Third-party API (R2). |
+| `LANDSCAPE_POSTER` | `True` | flag | Use the wide backdrop image instead of the tall poster (with TMDB). |
 | `TMDB_API_KEY` | `""` | text | Your TMDB key (<https://www.themoviedb.org/settings/api>). Currently forwarded to the third-party API. |
 
 ---
@@ -183,12 +184,12 @@ Posts "New Movie/Series Added" to `MOVIE_UPDATE_CHANNEL` when files arrive in `C
 
 | Variable | Default | Type | Description |
 |---|---|---|---|
-| `STREAM_MODE` | `False` | **bool ⚠️** | Show "Fast Download / Watch Online" buttons under files. |
-| `PREMIUM_STREAM_MODE` | `False` | **bool ⚠️** | With `STREAM_MODE`: only premium users get stream links. |
+| `STREAM_MODE` | `False` | flag | Show "Fast Download / Watch Online" buttons under files. |
+| `PREMIUM_STREAM_MODE` | `False` | flag | With `STREAM_MODE`: only premium users get stream links. |
 | `PORT` | `8080` | number | Web server port (always binds `0.0.0.0`). |
 | `FQDN` | `0.0.0.0` (from `WEB_SERVER_BIND_ADDRESS`) | text | Public domain used to build stream links, e.g. `mybot.example.com` (no `https://`). **Must be set** for streaming. |
-| `HAS_SSL` | `True` | **bool ⚠️** | `https://` vs `http://` in links. Only an empty value gives `http`. |
-| `NO_PORT` | `False` | **bool ⚠️** | No real effect (the URL is rebuilt from `HAS_SSL` afterwards). |
+| `HAS_SSL` | `True` | flag | `https://` (True) vs `http://` (False) in links. |
+| `NO_PORT` | `False` | flag | No real effect (the URL is rebuilt from `HAS_SSL` afterwards). |
 | `WEB_SERVER_BIND_ADDRESS` | `0.0.0.0` | text | Only used as the fallback for `FQDN`; the server always binds `0.0.0.0`. |
 | `APP_NAME` | *(none)* | text | Heroku app name. On Heroku without `FQDN`, links use `<APP_NAME>.herokuapp.com`. |
 | `DYNO` | *(set by Heroku)* | — | Its presence switches on Heroku mode (enables `PING_INTERVAL` pinging). Don't set manually. |
