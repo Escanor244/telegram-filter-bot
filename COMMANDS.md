@@ -32,7 +32,7 @@ Where it says **PM only** or **Group only**, the command is ignored or refused e
 | `/group_cmd` | anywhere | Shows the group-admin command list. |
 | `/alive` (`.alive`) | anywhere | "I am alive" sticker and message (auto-deletes after 60 s). |
 | `/ping` (`.ping`) | anywhere | Response time in ms (auto-deletes after 60 s). |
-| `/system` | anywhere | OS, bot uptime, system uptime, RAM, disk usage (auto-deletes after 60 s). |
+| `/system` | **bot owner only** | OS, bot uptime, system uptime, RAM, disk usage (auto-deletes after 60 s). |
 | `/stickerid` (reply to sticker) | anywhere | Shows the sticker's file ID and unique ID. |
 
 ### Tools
@@ -79,6 +79,8 @@ Where it says **PM only** or **Group only**, the command is ignored or refused e
 
 All of these must be sent **inside the group** (except `/reload <id>` and settings opened in PM). Changes are logged to `LOG_API_CHANNEL`.
 
+> 🔒 **Owner lock:** every command in this table except `/settings` and `/reload` now works **only for the bot owner** (`ADMINS` in env), who must also be an admin of that group. Inside `/settings`, the **Verify** toggle and the **Reset settings** button are owner-only too; the other toggles stay open to group admins.
+
 | Command | What it does |
 |---|---|
 | `/settings` | In a group: choose to open settings here or in PM. In PM: pick one of your connected groups. Toggles: Result page (button/text), File secure, IMDB poster, Welcome msg, Auto delete, Max buttons (10 or `MAX_B_TN`), Spell check, Verify, Remove connection. |
@@ -107,8 +109,7 @@ All of these must be sent **inside the group** (except `/reload <id>` and settin
 | Command | Where | What it does |
 |---|---|---|
 | `/delete` (reply to a file) | anywhere | Delete that one file from the database. |
-| `/deletefiles <keyword>` | **PM only** | Find all files matching the keyword (e.g. `predvd`, `camrip`) and delete them after confirmation. |
-| `/deleteall` | anywhere | Delete **every** indexed file (asks Yes/No). |
+| `/deletefiles <keyword>` | **PM only** | Find all files matching the keyword (e.g. `predvd`, `camrip`) and delete them after confirmation. **Safety cap:** refuses if more than 200 files match (`MAX_BULK_DELETE` in `info.py`). |
 | `/setskip <number>` | anywhere | Message ID to start from on the next channel index (default from `SKIP`, i.e. 2). |
 | `/del_msg` | anywhere | Clear the movie-update notification history (asks Yes/No). |
 

@@ -870,7 +870,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
             grp_id = query.message.chat.id
             st = await client.get_chat_member(grp_id, userid)
-            if (st.status == enums.ChatMemberStatus.OWNER) or (str(userid) in ADMINS):
+            if (st.status == enums.ChatMemberStatus.OWNER) or (userid in ADMINS):
                 await query.message.delete()
                 try:
                     await query.message.reply_to_message.delete()
@@ -923,13 +923,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
             f_caption = f"{files.file_name}"
         await query.answer(url=f"href='https://telegram.me/{temp.U_NAME}?start=file_{query.message.chat.id}_{file.file_id}")
 
-    elif query.data.startswith("autofilter_delete"):
-        await Media.collection.drop()
-        if MULTIPLE_DB:    
-            await Media2.collection.drop()
-        await query.answer("Eᴠᴇʀʏᴛʜɪɴɢ's Gᴏɴᴇ")
-        await query.message.edit('ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ ᴀʟʟ ɪɴᴅᴇxᴇᴅ ꜰɪʟᴇꜱ ✅')
-
     elif query.data.startswith("checksub"):
         try:
             ident, kk, file_id = query.data.split("#")
@@ -960,9 +953,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
 
     elif query.data.startswith("killfilesdq"):
+        if not query.from_user or query.from_user.id not in ADMINS:
+            return await query.answer("🔒 Only the bot owner can do this.", show_alert=True)
         ident, keyword = query.data.split("#")
         await query.message.edit_text(f"<b>Fetching Files for your query {keyword} on DB... Please wait...</b>")
         files, total = await get_bad_files(keyword)
+        if len(files) > MAX_BULK_DELETE:
+            return await query.message.edit_text(f"<b>🛑 {len(files)} files match now, more than the safety limit of {MAX_BULK_DELETE}. Nothing was deleted.</b>")
         await query.message.edit_text("<b>ꜰɪʟᴇ ᴅᴇʟᴇᴛɪᴏɴ ᴘʀᴏᴄᴇꜱꜱ ᴡɪʟʟ ꜱᴛᴀʀᴛ ɪɴ 5 ꜱᴇᴄᴏɴᴅꜱ !</b>")
         await asyncio.sleep(5)
         deleted = 0
@@ -997,7 +994,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if (
                 st.status != enums.ChatMemberStatus.ADMINISTRATOR
                 and st.status != enums.ChatMemberStatus.OWNER
-                and str(userid) not in ADMINS
+                and userid not in ADMINS
         ):
             await query.answer("ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛꜱ ᴛᴏ ᴅᴏ ᴛʜɪꜱ !", show_alert=True)
             return
@@ -1020,7 +1017,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if (
                 st.status != enums.ChatMemberStatus.ADMINISTRATOR
                 and st.status != enums.ChatMemberStatus.OWNER
-                and str(userid) not in ADMINS
+                and userid not in ADMINS
         ):
             await query.answer("Yᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ sᴜғғɪᴄɪᴀɴᴛ ʀɪɢʜᴛs ᴛᴏ ᴅᴏ ᴛʜɪs !", show_alert=True)
             return
@@ -1712,6 +1709,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
         userid = query.from_user.id if query.from_user else None
         if not await is_check_admin(client, int(grp_id), userid):
             await query.answer(script.NT_ADMIN_ALRT_TXT, show_alert=True)
+            return
+        if set_type not in ("button", "file_secure", "imdb", "welcome", "auto_delete", "max_btn", "spell_check", "is_verify"):
+            return await query.answer("Invalid setting.", show_alert=True)
+        if set_type == "is_verify" and userid not in ADMINS:
+            await query.answer("🔒 Only the bot owner can change verification.", show_alert=True)
             return
         if status == "True":
             await save_group_settings(int(grp_id), set_type, False)

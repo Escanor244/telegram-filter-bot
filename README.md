@@ -68,7 +68,6 @@ info                – Get user info
 id                  – Get Telegram ID
 link                – Create single post link
 batch               – Create bulk post link
-deleteall           – Delete all files from DB
 delete              – Delete a specific file
 deletefiles         – Remove PreDVD and CamRip files
 broadcast           – Broadcast to users

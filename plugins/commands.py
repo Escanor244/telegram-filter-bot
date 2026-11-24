@@ -563,26 +563,7 @@ async def delete(bot, message):
                         await msg.edit('Fɪʟᴇ ɴᴏᴛ ғᴏᴜɴᴅ ɪɴ ᴅᴀᴛᴀʙᴀsᴇ ❌')
 
 
-@Client.on_message(filters.command('deleteall') & filters.user(ADMINS))
-async def delete_all_index(bot, message):
-    await message.reply_text(
-        'ᴛʜɪꜱ ᴡɪʟʟ ᴅᴇʟᴇᴛᴇ ᴀʟʟ ʏᴏᴜʀ ɪɴᴅᴇxᴇᴅ ꜰɪʟᴇꜱ !\nᴅᴏ ʏᴏᴜ ꜱᴛɪʟʟ ᴡᴀɴᴛ ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ ?',
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="⚠️ ʏᴇꜱ ⚠️", callback_data="autofilter_delete"
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        text="❌ ɴᴏ ❌", callback_data="close_data"
-                    )
-                ],
-            ]
-        ),
-        quote=True,
-    )
+# /deleteall removed on purpose: the bot never wipes the whole file database at once.
 
 @Client.on_message(filters.command('settings'))
 async def settings(client, message):
@@ -647,8 +628,15 @@ async def connect_group(client, message):
         except:
             await message.reply_text("Invalid group ID or error occurred.")
 
+# Owner lock: only the bot's ADMINS may change money/branding settings in any group
+OWNER_ONLY_TXT = "<b>🔒 ᴏɴʟʏ ᴛʜᴇ ʙᴏᴛ ᴏᴡɴᴇʀ ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴛʜɪꜱ ꜱᴇᴛᴛɪɴɢ.</b>"
+def is_bot_owner(user):
+    return bool(user) and user.id in ADMINS
+
 @Client.on_message(filters.command('set_template'))
 async def save_template(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     sts = await message.reply("ᴄʜᴇᴄᴋɪɴɢ ᴛᴇᴍᴘʟᴀᴛᴇ...")
     user_id = message.from_user.id if message.from_user else None
     if not user_id:
@@ -831,6 +819,8 @@ async def deletemultiplefiles(bot, message):
     k = await bot.send_message(chat_id=message.chat.id, text=f"<b>Fetching Files for your query {keyword} on DB... Please wait...</b>")
     files, total = await get_bad_files(keyword)
     total = len(files)
+    if total > MAX_BULK_DELETE:
+        return await k.edit_text(f"<b>🛑 {total} files match <code>{keyword}</code>. That is more than the safety limit of {MAX_BULK_DELETE}.\n\nUse a more specific keyword (e.g. the movie name + camrip).</b>")
     if total == 0:
         await k.edit_text(f"<b>No files found for your query {keyword} !</b>")
         await asyncio.sleep(DELETE_TIME)
@@ -1019,6 +1009,8 @@ async def del_msg(client, message):
 
 @Client.on_callback_query(filters.regex('^confirm_del_'))
 async def confirmation_handler(client, callback_query):
+    if not is_bot_owner(callback_query.from_user):
+        return await callback_query.answer("🔒 Only the bot owner can do this.", show_alert=True)
     action = callback_query.data.split("_")[-1]
     if action == "yes":
         await db.delete_all_msg()
@@ -1029,6 +1021,8 @@ async def confirmation_handler(client, callback_query):
 
 @Client.on_message(filters.command('set_caption'))
 async def save_caption(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     grp_id = message.chat.id
     title = message.chat.title
     invite_link = await client.export_chat_invite_link(grp_id)
@@ -1048,6 +1042,8 @@ async def save_caption(client, message):
 
 @Client.on_message(filters.command(["set_tutorial", "set_tutorial_2", "set_tutorial_3"]))
 async def set_tutorial(client, message: Message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     grp_id = message.chat.id
     title = message.chat.title
     chat_type = message.chat.type
@@ -1088,6 +1084,8 @@ async def set_tutorial(client, message: Message):
 
 
 async def handle_shortner_command(c, m, shortner_key, api_key, log_prefix, fallback_url, fallback_api):
+    if not is_bot_owner(m.from_user):
+        return await m.reply_text(OWNER_ONLY_TXT)
     grp_id = m.chat.id
     if not await is_check_admin(c, grp_id, m.from_user.id):
         return await m.reply_text(script.NT_ADMIN_ALRT_TXT)
@@ -1141,6 +1139,8 @@ async def set_shortner_3(c, m):
 
 @Client.on_message(filters.command('set_log_channel'))
 async def set_log(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     grp_id = message.chat.id
     title = message.chat.title
     if not await is_check_admin(client, grp_id, message.from_user.id):
@@ -1178,6 +1178,8 @@ async def set_log(client, message):
 
 @Client.on_message(filters.command('set_time'))
 async def set_time(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     chat_type = message.chat.type
     if chat_type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         return await message.reply_text("<b>ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪɴ ɢʀᴏᴜᴘ...</b>")       
@@ -1196,6 +1198,8 @@ async def set_time(client, message):
 
 @Client.on_message(filters.command('set_time_2'))
 async def set_time_2(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     chat_type = message.chat.type
     if chat_type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         return await message.reply_text("<b>ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪɴ ɢʀᴏᴜᴘ...</b>")       
@@ -1215,6 +1219,8 @@ async def set_time_2(client, message):
 
 @Client.on_message(filters.command('details'))
 async def all_settings(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     if message.chat.type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         return await message.reply_text("<b>ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪɴ ɢʀᴏᴜᴘ...</b>")
     grp_id = message.chat.id
@@ -1240,6 +1246,8 @@ async def reset_group_callback(client, callback_query):
     user_id = callback_query.from_user.id
     if not await is_check_admin(client, grp_id, user_id):
         return await callback_query.answer(script.NT_ADMIN_ALRT_TXT, show_alert=True)
+    if not is_bot_owner(callback_query.from_user):
+        return await callback_query.answer("🔒 Only the bot owner can reset settings.", show_alert=True)
     await callback_query.answer("♻️ ʀᴇꜱᴇᴛᴛɪɴɢ ꜱᴇᴛᴛɪɴɢꜱ...")
     defaults = {
         'shortner': SHORTENER_WEBSITE,
@@ -1297,6 +1305,8 @@ async def verify(bot, message):
 
 @Client.on_message(filters.command('set_fsub'))
 async def set_fsub(client, message):
+    if not is_bot_owner(message.from_user):
+        return await message.reply_text(OWNER_ONLY_TXT)
     try:
         userid = message.from_user.id if message.from_user else None
         if not userid:

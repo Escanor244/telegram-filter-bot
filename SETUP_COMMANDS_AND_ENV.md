@@ -95,7 +95,6 @@ If you are deploying with Docker, use the provided `Dockerfile` / `docker-compos
 
 ### File/search flows
 - `/delete` - admin-only delete one indexed file from the database
-- `/deleteall` - admin-only prompt to remove all indexed files
 - `/deletefiles` - admin-only remove files by keyword
 
 ### Admin broadcast and moderation

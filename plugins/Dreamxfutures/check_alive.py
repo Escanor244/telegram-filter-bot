@@ -101,7 +101,7 @@ async def calculate_latency():
     latency = (end - start) * 1000
     return f"{latency:.3f} ms"
 
-@Client.on_message(filters.command("system"))
+@Client.on_message(filters.command("system") & filters.user(ADMINS))
 async def send_system_info(client, message):
     system_info = get_system_info()
     latency = await calculate_latency() 

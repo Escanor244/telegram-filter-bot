@@ -59,7 +59,7 @@ Only temporary or report files: `DreamXlogs.txt` (log), `users.txt`, `chats.txt`
 
 | ID | Location | Issue |
 |---|---|---|
-| S1 | `pmfilter.py:926-931` | The `autofilter_delete` callback (drops **all** indexed files) has no admin check of its own. It relies on only admins seeing the `/deleteall` button. |
+| S1 | `pmfilter.py:926-931` | The `autofilter_delete` callback (drops **all** indexed files) has no admin check of its own. It relies on only admins seeing the `/deleteall` button. **FIXED (24 Nov 2026): `/deleteall` and its button were removed completely.** |
 | S2 | `dreamxbotz/template/req.html:1054,1096-1097` + `render_template.py:38` | The file name is placed inside JavaScript strings (`'{{file_name}}'`), and `jinja2.Template` is created without autoescaping. A file name containing `'` or `</script>` could inject script into the stream page (XSS). File names come from your indexed channels. |
 | S3 | `commands.py:629-634` | `/reload` used in a group has no admin check, so any member can link that group to their PM settings list. Actual settings changes still check admin rights. |
 | S4 | `pmfilter.py:873,1000,1023` | Admin checks use `str(userid) in ADMINS`, but `ADMINS` holds integers, so this check is always False (it only matters as a fallback). |
